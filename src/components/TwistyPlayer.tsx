@@ -6,10 +6,12 @@ import "cubing/twisty";
  * Public props for the React wrapper (camelCase & typed).
  * We'll map these to the underlying web component's properties.
  */
+type ControlPanelOption = "auto" | "bottom-row" | "none";
+
 interface TwistyPlayerProps {
   alg?: string;
   puzzle?: string;
-  controlPanel?: string;
+  controlPanel?: ControlPanelOption;
   visualization?: string;
   background?: string;
   className?: string;
@@ -30,7 +32,7 @@ const TwistyPlayer = React.forwardRef<TwistyPlayerHandle, TwistyPlayerProps>(
     {
       alg,
       puzzle = "3x3x3",
-      controlPanel = "full",
+      controlPanel = "auto",
       visualization,
       background,
       experimentalStickering,
