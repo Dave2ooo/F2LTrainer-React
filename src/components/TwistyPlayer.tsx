@@ -1,25 +1,18 @@
 import React, { useCallback, useEffect, useImperativeHandle, useRef } from "react";
-// Importing registers the custom element globally
 import "cubing/twisty";
 
-/**
- * Public props for the React wrapper (camelCase & typed).
- * We'll map these to the underlying web component's properties.
- */
-type ControlPanelOption = "auto" | "bottom-row" | "none";
-
-interface TwistyPlayerProps {
+interface Props {
+  experimentalSetupAlg?: string;
   alg?: string;
-  puzzle?: string;
-  controlPanel?: ControlPanelOption;
-  visualization?: string;
-  background?: string;
+  cameraLongitude?: number;
+  cameraLatitude?: number;
+  experimentalStickering?: string;
+  controlPanel?: "auto" | "bottom-row" | "none";
+  experimentalDragInput?: "auto" | "none";
+  background?: "none" | "checkered" | "checkered-transparent";
   className?: string;
   style?: React.CSSProperties;
-  experimentalStickering?: string;
-  experimentalSetupAlg?: string;
 }
-
 
 /** Methods you might want to call imperatively via ref. */
 export type TwistyPlayerHandle = {
@@ -27,16 +20,17 @@ export type TwistyPlayerHandle = {
   getElement: () => TwistyPlayerElement | null;
 };
 
-const TwistyPlayer = React.forwardRef<TwistyPlayerHandle, TwistyPlayerProps>(
+const TwistyPlayer = React.forwardRef<TwistyPlayerHandle, Props>(
   (
     {
+      experimentalSetupAlg = "z2 y'",
       alg,
-      puzzle = "3x3x3",
+      cameraLongitude = 25,
+      cameraLatitude = 25,
+      experimentalStickering = "EDGES:------------,CORNERS:--------,CENTERS:------`;",
       controlPanel = "auto",
-      visualization,
-      background,
-      experimentalStickering,
-      experimentalSetupAlg,
+      experimentalDragInput = "auto",
+      background = "none",
       className,
       style,
     },
@@ -56,22 +50,33 @@ const TwistyPlayer = React.forwardRef<TwistyPlayerHandle, TwistyPlayerProps>(
     useEffect(() => {
       const el = elRef.current;
       if (!el) return;
-      if (alg !== undefined) el.alg = alg;
-      if (puzzle !== undefined) el.puzzle = puzzle;
-      if (controlPanel !== undefined) el.controlPanel = controlPanel;
-      if (visualization !== undefined) el.visualization = visualization;
-      if (background !== undefined) el.background = background;
-      if (experimentalStickering !== undefined) el.experimentalStickering = experimentalStickering;
-      if (experimentalSetupAlg !== undefined) el.experimentalSetupAlg = experimentalSetupAlg;
-    }, [alg, puzzle, controlPanel, visualization, background, experimentalStickering, experimentalSetupAlg]);
 
-    return (
-      <twisty-player
-        ref={handleElementRef}
-        className={className}
-        style={style}
-      />
-    );
+      el.puzzle = "3x3x3";
+      el.hintFacelets = "none";
+
+      if (experimentalSetupAlg !== undefined) el.experimentalSetupAlg = experimentalSetupAlg;
+      if (alg !== undefined) el.alg = alg;
+      if (cameraLongitude !== undefined) el.cameraLongitude = cameraLongitude;
+      if (cameraLatitude !== undefined) el.cameraLatitude = cameraLatitude;
+      if (experimentalStickering !== undefined) el.experimentalStickeringMaskOrbits = experimentalStickering;
+      if (controlPanel !== undefined) el.controlPanel = controlPanel;
+      if (experimentalDragInput !== undefined) el.experimentalDragInput = experimentalDragInput;
+      if (background !== undefined) el.background = background;
+      // el.timestamp = 0;
+      // el.jumpToStart?.();
+      // el.flash?.();
+    }, [
+      experimentalSetupAlg,
+      alg,
+      cameraLongitude,
+      cameraLatitude,
+      experimentalStickering,
+      controlPanel,
+      experimentalDragInput,
+      background,
+    ]);
+
+    return <twisty-player ref={handleElementRef} className={className} style={style} />;
   }
 );
 

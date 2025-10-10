@@ -1,12 +1,19 @@
 declare global {
   interface TwistyPlayerElement extends HTMLElement {
+    experimentalDragInput: string;
+    cameraLatitude: number;
+    cameraLongitude: number;
+    flash: any;
+    jumpToStart: any;
+    timestamp: number;
     alg?: string;
     puzzle?: string;
     controlPanel?: string;
     visualization?: string;
     background?: string;
-    experimentalStickering?: string;
+    experimentalStickeringMaskOrbits?: string;
     experimentalSetupAlg?: string;
+    hintFacelets?: string;
   }
 
   namespace JSX {
@@ -28,4 +35,4 @@ declare global {
   }
 }
 
-export {};
+export { };
