@@ -50,8 +50,16 @@ function getStickeringString(crossColor: StickerColor, frontColor: StickerColor,
         if (f2lSideColor === undefined)
             throw new Error("Invalid pieceToHide: " + pieceToHide);
 
-        edgesArr[STICKERING.edges[f2lFace][f2lSideColor]] = "I";
-        cornersArr[STICKERING.corners[crossColor][f2lFace][f2lSideColor]] = "I";
+        const edgeIndex = STICKERING.edges[f2lFace][f2lSideColor];
+        if (edgeIndex === undefined)
+            throw new Error("Invalid pieceToHide: " + pieceToHide);
+
+        const cornerIndex = STICKERING.corners[crossColor][f2lFace]?.[f2lSideColor];
+        if (cornerIndex === undefined)
+            throw new Error("Invalid pieceToHide: " + pieceToHide);
+
+        edgesArr[edgeIndex] = "I";
+        cornersArr[cornerIndex] = "I";
     }
 
     // Hide top layer
