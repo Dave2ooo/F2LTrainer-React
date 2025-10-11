@@ -1,0 +1,1 @@
+export type Group = "basic" | "basicBack" | "advanced" | "expert";
