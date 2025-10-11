@@ -2,13 +2,18 @@ import { Button, Card } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import TwistyPlayer, { type TwistyPlayerHandle } from "./TwistyPlayer";
 import { mirrorAlg } from "@/logic/mirrorAlg";
+import type { StickerColor, StickerHidden } from "@/types/stickering";
+import getStickeringString from "@/logic/stickering";
 
 interface Props {
   rotation: string;
   setupAlgRight: string;
+  stickering?: StickerHidden;
+  crossColor?: StickerColor;
+  frontColor?: StickerColor;
 }
 
-const CaseCard = ({ rotation, setupAlgRight }: Props) => {
+const CaseCard = ({ rotation, setupAlgRight, stickering, crossColor = "white", frontColor = "red" }: Props) => {
   const twistyRef = useRef<TwistyPlayerHandle>(null);
 
   const [mirrored, setMirrored] = React.useState(false);
@@ -24,7 +29,7 @@ const CaseCard = ({ rotation, setupAlgRight }: Props) => {
           controlPanel="none"
           experimentalDragInput="none"
           background="none"
-          experimentalStickering="EDGES:------------,CORNERS:--------,CENTERS:-----`;"
+          experimentalStickering={getStickeringString(crossColor, frontColor, stickering, mirrored)}
           // style={{ width: 250, height: 250 }}
         />
         <Card.Header></Card.Header>

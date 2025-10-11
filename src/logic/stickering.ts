@@ -1,6 +1,6 @@
 import { OPPOSITE_COLOR, SIDE_COLOR, STICKERING, type StickerColor, type StickerHidden } from "@/types/stickering";
 
-function getStickeringString(crossColor: StickerColor, frontColor: StickerColor, pieceToHide: StickerHidden, mirrored: boolean) {
+function getStickeringString(crossColor: StickerColor, frontColor: StickerColor, stickering: StickerHidden, mirrored: boolean) {
     let edgesArr, cornersArr;
 
     // If selection is 1, show the whole cube (no hidden stickers)
@@ -8,24 +8,24 @@ function getStickeringString(crossColor: StickerColor, frontColor: StickerColor,
     edgesArr = Array(12).fill("-");
     cornersArr = Array(8).fill("-");
 
-    // Hide F2L slot *only if pieceToHide is set*
-    if (pieceToHide !== undefined) {
+    // Hide F2L slot *only if stickering is set*
+    if (stickering !== undefined) {
         let side: "left" | "right"
         let facing: "front" | "back";
         // fr: front-right, fl: front-left, br: back-right, bl: back-left
-        if (pieceToHide === "fr") {
+        if (stickering === "fr") {
             facing = "front";
             side = "right";
-        } else if (pieceToHide === "fl") {
+        } else if (stickering === "fl") {
             facing = "front";
             side = "left";
-        } else if (pieceToHide === "br") {
+        } else if (stickering === "br") {
             facing = "back";
             side = "left";
-        } else if (pieceToHide === "bl") {
+        } else if (stickering === "bl") {
             facing = "back";
             side = "right";
-        } else throw new Error("Invalid pieceToHide: " + pieceToHide);
+        } else throw new Error("Invalid stickering: " + stickering);
 
         // If mirrored, swap left and right
         if (mirrored) {
@@ -48,15 +48,15 @@ function getStickeringString(crossColor: StickerColor, frontColor: StickerColor,
         }
 
         if (f2lSideColor === undefined)
-            throw new Error("Invalid pieceToHide: " + pieceToHide);
+            throw new Error("Invalid stickering: " + stickering);
 
         const edgeIndex = STICKERING.edges[f2lFace][f2lSideColor];
         if (edgeIndex === undefined)
-            throw new Error("Invalid pieceToHide: " + pieceToHide);
+            throw new Error("Invalid stickering: " + stickering);
 
         const cornerIndex = STICKERING.corners[crossColor][f2lFace]?.[f2lSideColor];
         if (cornerIndex === undefined)
-            throw new Error("Invalid pieceToHide: " + pieceToHide);
+            throw new Error("Invalid stickering: " + stickering);
 
         edgesArr[edgeIndex] = "I";
         cornersArr[cornerIndex] = "I";
@@ -75,3 +75,5 @@ function getStickeringString(crossColor: StickerColor, frontColor: StickerColor,
     const corners = cornersArr.join("");
     return `EDGES:${edges},CORNERS:${corners},CENTERS:------`;
 }
+
+export default getStickeringString;
