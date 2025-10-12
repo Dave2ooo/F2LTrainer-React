@@ -3,8 +3,8 @@ declare global {
     experimentalDragInput: string;
     cameraLatitude: number;
     cameraLongitude: number;
-    flash: any;
-    jumpToStart: any;
+    flash: () => void;
+    jumpToStart: () => void;
     timestamp: number;
     alg?: string;
     puzzle?: string;

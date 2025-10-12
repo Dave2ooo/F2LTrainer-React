@@ -1,12 +1,8 @@
 import { OPPOSITE_COLOR, SIDE_COLOR, STICKERING, type StickerColor, type StickerHidden } from "@/types/stickering";
 
 function getStickeringString(crossColor: StickerColor, frontColor: StickerColor, stickering: StickerHidden, mirrored: boolean) {
-    let edgesArr, cornersArr;
-
-    // If selection is 1, show the whole cube (no hidden stickers)
-
-    edgesArr = Array(12).fill("-");
-    cornersArr = Array(8).fill("-");
+    const edgesArr = Array(12).fill("-");
+    const cornersArr = Array(8).fill("-");
 
     // Hide F2L slot *only if stickering is set*
     if (stickering !== undefined) {
