@@ -1,7 +1,7 @@
 import CategoryComponent from "./CategoryComponent";
 import type { AlgorithmCollection } from "../data";
 import type { GroupDefinition } from "@/types/group";
-import { For } from "@chakra-ui/react";
+import { For, Heading } from "@chakra-ui/react";
 
 interface Props {
   groupDefinition: GroupDefinition;
@@ -10,12 +10,9 @@ interface Props {
 }
 
 const GroupComponent = ({ groupDefinition, groupScrambles, groupAlgorithms }: Props) => {
-  console.log("groupDefinition", groupDefinition);
-  console.log("groupScrambles", groupScrambles);
-  console.log("groupAlgorithms", groupAlgorithms);
-
   return (
     <>
+      <Heading size="4xl">{groupDefinition.name}</Heading>
       <For each={groupDefinition.categoryNames}>
         {(_, index) => (
           <CategoryComponent

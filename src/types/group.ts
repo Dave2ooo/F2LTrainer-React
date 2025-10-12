@@ -53,6 +53,7 @@ const defaultColorSelection = {
 
 export interface GroupDefinition {
     readonly id: Group;
+    readonly name: string;
     readonly numberCases: number;
     readonly categoryNames: readonly string[];
     readonly categoryCases: readonly (readonly CaseId[])[];
@@ -63,6 +64,7 @@ export interface GroupDefinition {
 
 const BASIC_DEFINITION: GroupDefinition = {
     id: "basic",
+    name: "Basic Cases",
     numberCases: 41,
     categoryNames: [
         "Basic Inserts",
@@ -95,6 +97,7 @@ const BASIC_DEFINITION: GroupDefinition = {
 
 const BASIC_BACK_DEFINITION: GroupDefinition = {
     id: "basicBack",
+    name: "Basic Backslot",
     numberCases: 41,
     categoryNames: [
         "Basic Inserts",
@@ -127,6 +130,7 @@ const BASIC_BACK_DEFINITION: GroupDefinition = {
 
 const ADVANCED_DEFINITION: GroupDefinition = {
     id: "advanced",
+    name: "Advanced Cases",
     numberCases: 60, // 42,
     categoryNames: [
         "Slot in Front  / White facing Up",
@@ -240,6 +244,7 @@ const ADVANCED_DEFINITION: GroupDefinition = {
 
 const EXPERT_DEFINITION: GroupDefinition = {
     id: "expert",
+    name: "Expert Cases",
     numberCases: 17,
     categoryNames: [
         "Corner is solved",
