@@ -1,15 +1,55 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { createInitialGlobalState } from "@/types/group";
-import type { GlobalState } from "@/types/group";
+import type { CaseId, CaseState, GlobalState, Group } from "@/types/group";
 
 const GLOBAL_STATE_STORAGE_KEY = "f2ltrainer.globalState";
 
 type GlobalStateContextValue = {
   state: GlobalState;
   setState: React.Dispatch<React.SetStateAction<GlobalState>>;
+  updateCaseState: (
+    groupId: Group,
+    caseId: CaseId,
+    updater: (caseState: CaseState) => CaseState,
+  ) => void;
 };
 
 const GlobalStateContext = createContext<GlobalStateContextValue | undefined>(undefined);
+
+const applyCaseUpdate = (
+  previousState: GlobalState,
+  groupId: Group,
+  caseId: CaseId,
+  updater: (caseState: CaseState) => CaseState,
+): GlobalState => {
+  const groupState = previousState.groups[groupId];
+  const caseState = groupState?.cases[caseId];
+
+  if (!groupState || !caseState) {
+    return previousState;
+  }
+
+  return {
+    ...previousState,
+    groups: {
+      ...previousState.groups,
+      [groupId]: {
+        ...groupState,
+        cases: {
+          ...groupState.cases,
+          [caseId]: updater(caseState),
+        },
+      },
+    },
+  };
+};
 
 const loadGlobalState = (): GlobalState => {
   if (typeof window === "undefined") {
@@ -57,12 +97,20 @@ export const GlobalStateProvider = ({ children }: { children: React.ReactNode })
     window.localStorage.setItem(GLOBAL_STATE_STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
+  const updateCaseState = useCallback<GlobalStateContextValue["updateCaseState"]>(
+    (groupId, caseId, updater) => {
+      setState((previousState) => applyCaseUpdate(previousState, groupId, caseId, updater));
+    },
+    [setState],
+  );
+
   const value = useMemo(
     () => ({
       state,
       setState,
+      updateCaseState,
     }),
-    [state],
+    [state, updateCaseState],
   );
 
   return <GlobalStateContext.Provider value={value}>{children}</GlobalStateContext.Provider>;

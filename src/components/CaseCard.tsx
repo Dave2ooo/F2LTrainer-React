@@ -31,39 +31,18 @@ const CaseCard = ({
   const twistyRef = useRef<TwistyPlayerHandle>(null);
 
   const [mirrored, setMirrored] = React.useState(false);
-  const { state, setState } = useGlobalState();
+  const { state, updateCaseState } = useGlobalState();
 
   const currentSelection = useMemo(() => {
     return state.groups[groupId]?.cases[caseId]?.algorithmSelection;
   }, [caseId, groupId, state.groups]);
 
   const handleAlgorithmSelectionUpdate = React.useCallback(() => {
-    setState((previousState) => {
-      const groupState = previousState.groups[groupId];
-      const caseState = groupState?.cases[caseId];
-
-      if (!groupState || !caseState) {
-        return previousState;
-      }
-
-      return {
-        ...previousState,
-        groups: {
-          ...previousState.groups,
-          [groupId]: {
-            ...groupState,
-            cases: {
-              ...groupState.cases,
-              [caseId]: {
-                ...caseState,
-                algorithmSelection: { left: 1, right: 1 },
-              },
-            },
-          },
-        },
-      };
-    });
-  }, [caseId, groupId, setState]);
+    updateCaseState(groupId, caseId, (caseState) => ({
+      ...caseState,
+      algorithmSelection: { left: 1, right: 1 },
+    }));
+  }, [caseId, groupId, updateCaseState]);
 
   return (
     <>
