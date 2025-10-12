@@ -1,8 +1,6 @@
 import { GROUP_DEFINITIONS } from "./types/group";
 import { GROUP_ALGORITHMS, GROUP_SCRAMBLES } from "./data";
 import SelectViewComponent from "./components/SelectViewComponent";
-import { Box, Circle, Float } from "@chakra-ui/react";
-
 function App() {
   return (
     <>

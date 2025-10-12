@@ -19,6 +19,7 @@ const GroupComponent = ({ groupDefinition, groupScrambles, groupAlgorithms }: Pr
             key={index}
             categoryName={groupDefinition.categoryNames[index]}
             caseIds={groupDefinition.categoryCases[index]}
+            groupId={groupDefinition.id}
             groupScrambles={groupScrambles}
             groupAlgorithms={groupAlgorithms}
           />

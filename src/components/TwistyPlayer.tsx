@@ -1,5 +1,18 @@
 import React, { useCallback, useEffect, useImperativeHandle, useRef } from "react";
-import "cubing/twisty";
+
+let twistyImportPromise: Promise<unknown> | null = null;
+
+const ensureTwistyModule = () => {
+  if (typeof window === "undefined") {
+    return Promise.resolve();
+  }
+
+  if (!twistyImportPromise) {
+    twistyImportPromise = import("cubing/twisty");
+  }
+
+  return twistyImportPromise;
+};
 
 interface Props {
   experimentalSetupAlg?: string;
@@ -45,6 +58,10 @@ const TwistyPlayer = React.forwardRef<TwistyPlayerHandle, Props>(
     useImperativeHandle(ref, () => ({
       getElement: () => elRef.current,
     }));
+
+    useEffect(() => {
+      void ensureTwistyModule();
+    }, []);
 
     // Keep web-component properties in sync with React props.
     useEffect(() => {
