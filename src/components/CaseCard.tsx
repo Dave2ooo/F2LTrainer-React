@@ -6,7 +6,7 @@ import type { StickerColor, StickerHidden } from "@/types/stickering";
 import getStickeringString from "@/logic/stickering";
 
 interface Props {
-  rotation: string;
+  rotation?: string;
   setupAlgRight: string;
   alg: string;
   stickering?: StickerHidden;
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const CaseCard = ({
-  rotation,
+  rotation = "z2 y'",
   setupAlgRight,
   alg,
   stickering,
