@@ -17,12 +17,12 @@ const SelectViewComponent = ({ groupDefinitions, groupScrambles, groupAlgorithms
   return (
     <>
       <For each={Object.values(groupDefinitions)}>
-        {(item, index) => (
+        {(item) => (
           <GroupComponent
             key={item.id}
             groupDefinition={item}
-            groupScrambles={groupScrambles}
-            groupAlgorithms={groupAlgorithms}
+            groupScrambles={groupScrambles[item.id]}
+            groupAlgorithms={groupAlgorithms[item.id]}
           />
         )}
       </For>
