@@ -1,22 +1,25 @@
 export type Group = "basic" | "basicBack" | "advanced" | "expert";
+export const GROUPS: readonly Group[] = ["basic", "basicBack", "advanced", "expert"];
+
 export type TrainState = "unlearned" | "learning" | "finished";
+export const TRAIN_STATES: readonly TrainState[] = ["unlearned", "learning", "finished"];
 
-type CaseId = number; // 1-based, matches existing assets
+export type CaseId = number; // 1-based, matches existing assets
 
-interface CaseState {
-    status: 0 | 1 | 2; // learning, unlearned, finished / could also be "unlearned" | "learning" | "finished"
+export interface CaseState {
+    status: TrainState;
     algorithmSelection: { left: number; right: number };
     customAlgorithm: { left: string; right: string };
     identicalAlgorithm: boolean;
     solveCount: number;
 }
 
-interface GroupState {
+export interface GroupState {
     cases: Record<CaseId, CaseState>;
     collapsedCategories: Record<number, boolean>;
 }
 
-interface GlobalState {
+export interface GlobalState {
     groups: Record<Group, GroupState>;
     currentGroup: Group; // Group that is selected in selection view
     trainStateSelection: Record<TrainState, boolean>;
@@ -25,9 +28,19 @@ interface GlobalState {
     colorSelection: Record<"cross" | "front", string>;
 }
 
-const BASIC_COLLECTION = {
-    numberCases: 41,
+export interface GroupDefinition {
+    readonly id: Group;
+    readonly numberCases: number;
+    readonly categoryNames: readonly string[];
+    readonly categoryCases: readonly (readonly CaseId[])[];
+    readonly ignoreAUF?: readonly CaseId[];
+    readonly caseNumberMapping?: Readonly<Record<CaseId, string>>;
+    readonly piecesToHide?: readonly string[];
+}
 
+const BASIC_DEFINITION: GroupDefinition = {
+    id: "basic",
+    numberCases: 41,
     categoryNames: [
         "Basic Inserts",
         "Pieces on Top / White facing Front / Edge oriented",
@@ -57,9 +70,9 @@ const BASIC_COLLECTION = {
     ignoreAUF: [37, 38, 39, 40, 41],
 };
 
-const BASIC_BACK_COLLECTION = {
+const BASIC_BACK_DEFINITION: GroupDefinition = {
+    id: "basicBack",
     numberCases: 41,
-
     categoryNames: [
         "Basic Inserts",
         "Pieces on Top / White facing Back / Edge oriented",
@@ -89,9 +102,9 @@ const BASIC_BACK_COLLECTION = {
     ignoreAUF: [37, 38, 39, 40, 41],
 };
 
-const ADVANCED_COLLECTION = {
+const ADVANCED_DEFINITION: GroupDefinition = {
+    id: "advanced",
     numberCases: 60, // 42,
-
     categoryNames: [
         "Slot in Front  / White facing Up",
         "Slot in Front / White facing Front",
@@ -114,8 +127,6 @@ const ADVANCED_COLLECTION = {
         [31, 32, 33, 34, 35, 36],
         [43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60],
     ],
-    // Individual naming
-    // corresponding to basic cases, e.g. 10B -> Basic Case 10, Back slot free
     caseNumberMapping: {
         43: "10B",
         44: "12B",
@@ -197,14 +208,16 @@ const ADVANCED_COLLECTION = {
         "fl",
         "br",
         "fl",
+        "br",
+        "fl",
     ],
     // fr: front-right, fl: front-left, br: back-right, bl: back-left
     ignoreAUF: [55, 56, 57, 58, 59, 60],
 };
 
-const EXPERT_COLLECTION = {
+const EXPERT_DEFINITION: GroupDefinition = {
+    id: "expert",
     numberCases: 17,
-
     categoryNames: [
         "Corner is solved",
         "Pair in wrong slot",
@@ -221,3 +234,40 @@ const EXPERT_COLLECTION = {
     // fr: front-right, fl: front-left, br: back-right, bl: back-left
     ignoreAUF: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
 };
+
+export const GROUP_DEFINITIONS: Record<Group, GroupDefinition> = {
+    basic: BASIC_DEFINITION,
+    basicBack: BASIC_BACK_DEFINITION,
+    advanced: ADVANCED_DEFINITION,
+    expert: EXPERT_DEFINITION,
+};
+
+export const createCaseState = (): CaseState => ({
+    status: "unlearned",
+    algorithmSelection: { left: 0, right: 0 },
+    customAlgorithm: { left: "", right: "" },
+    identicalAlgorithm: true,
+    solveCount: 0,
+});
+
+export const createGroupState = (group: Group, definition: GroupDefinition = GROUP_DEFINITIONS[group]): GroupState => {
+    const categoryCases = definition.categoryCases ?? [];
+    const uniqueCaseIds = Array.from(new Set(categoryCases.flat())).sort((a, b) => a - b);
+    const caseIds = uniqueCaseIds.length > 0
+        ? uniqueCaseIds
+        : Array.from({ length: definition.numberCases }, (_, index) => index + 1);
+
+    const cases = Object.fromEntries(caseIds.map((caseId) => [caseId, createCaseState()]));
+
+    const collapsedCategories = Object.fromEntries(
+        definition.categoryNames.map((_, index) => [index, false as boolean]),
+    );
+
+    return {
+        cases: cases as Record<CaseId, CaseState>,
+        collapsedCategories: collapsedCategories as Record<number, boolean>,
+    };
+};
+
+export const createInitialGroupsState = (): Record<Group, GroupState> =>
+    Object.fromEntries(GROUPS.map((group) => [group, createGroupState(group)])) as Record<Group, GroupState>;
