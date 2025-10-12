@@ -12,7 +12,6 @@ interface Props {
   stickering?: StickerHidden;
   crossColor?: StickerColor;
   frontColor?: StickerColor;
-  onEditAlg: () => void;
 }
 
 const CaseCard = ({
@@ -22,7 +21,6 @@ const CaseCard = ({
   stickering,
   crossColor = "white",
   frontColor = "red",
-  onEditAlg,
 }: Props) => {
   const twistyRef = useRef<TwistyPlayerHandle>(null);
 
@@ -46,7 +44,7 @@ const CaseCard = ({
         <Card.Body />
         <Card.Footer>
           <VStack>
-            <Button onClick={onEditAlg}>Edit</Button>
+            <Button>Edit</Button>
             <Button onClick={() => setMirrored(!mirrored)}>Mirror</Button>
           </VStack>
         </Card.Footer>
