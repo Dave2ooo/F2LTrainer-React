@@ -1,6 +1,8 @@
 // Source https://github.com/Dave2ooo/F2LTrainer
 
-export const advancedAlgorithms: Record<number, string[]> = {
+import type { AlgorithmCollection } from "..";
+
+export const advancedAlgorithms: AlgorithmCollection = {
   1: ["U' R' U R2 U' R'"],
   2: ["U2 (R' U R) U' (S R S')", "y R' F R2 U' R' U2 F'", "y2 U2 (L F' L' F) (L U L')"],
   3: ["U L' R U2 L R'", "y U L U' L2' U L"],

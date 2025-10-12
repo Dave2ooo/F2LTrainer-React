@@ -1,6 +1,8 @@
 // Source https://github.com/Dave2ooo/F2LTrainer
 
-export const basicAlgorithmsBack: Record<number, string[]> = {
+import type { AlgorithmCollection } from "..";
+
+export const basicAlgorithmsBack: AlgorithmCollection = {
   1: ["r' U' R U M'", "U f R' f'", "y' U (L U' L')", "y U (R U' R')"],
   2: ["U' (R' U R)"],
   3: ["(R' U' R)"],

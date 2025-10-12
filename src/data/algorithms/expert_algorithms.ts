@@ -1,6 +1,8 @@
 // Source https://github.com/Dave2ooo/F2LTrainer
 
-export const expertAlgorithms: Record<number, string[]> = {
+import type { AlgorithmCollection } from "..";
+
+export const expertAlgorithms: AlgorithmCollection = {
   1: ["R2 U' R2' U R2", "y2 L2' U' L2 U L2'", "y F' R' F2 R F"],
   2: ["f' R' U R f", "y R' u' R u R", "y' L' u' L u L", "y2 f' D' L D f"],
   3: ["y L2' U L2 U' L2'", "y' R2 U R2' U' R2", "F L F2' L' F'"],

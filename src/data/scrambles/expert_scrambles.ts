@@ -1,6 +1,8 @@
 // Source https://github.com/Dave2ooo/F2LTrainer
 
-export const expertScrambles: Record<number, string[]> = {
+import type { AlgorithmCollection } from "..";
+
+export const expertScrambles: AlgorithmCollection = {
   1: [
     "R D' F2 U F2 D R'",
     "L R F2 R2 F2 L' R'",

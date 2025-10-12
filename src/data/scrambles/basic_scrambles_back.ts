@@ -1,6 +1,8 @@
 // Source https://github.com/Dave2ooo/F2LTrainer
 
-export const basicScramblesBack: Record<number, string[]> = {
+import type { AlgorithmCollection } from "..";
+
+export const basicScramblesBack: AlgorithmCollection = {
   1: [
     "R' F' U F R U'",
     "B L U L' B' U'",
