@@ -1,15 +1,23 @@
 import CaseCard from "./CaseCard";
 import type { AlgorithmCollection } from "@/data";
 import { Collapsible, For, Heading } from "@chakra-ui/react";
+import type { Group } from "@/types/group";
 
 interface Props {
   categoryName: string;
   caseIds: readonly number[];
+  groupId: Group;
   groupScrambles: AlgorithmCollection;
   groupAlgorithms: AlgorithmCollection;
 }
 
-const CategoryComponent = ({ categoryName, caseIds, groupScrambles, groupAlgorithms }: Props) => {
+const CategoryComponent = ({
+  categoryName,
+  caseIds,
+  groupId,
+  groupScrambles,
+  groupAlgorithms,
+}: Props) => {
   //   console.log("categoryIndex", categoryIndex);
   //   console.log("categoryName", categoryName);
   //   console.log("caseIds", caseIds);
@@ -27,6 +35,8 @@ const CategoryComponent = ({ categoryName, caseIds, groupScrambles, groupAlgorit
             {(item) => (
               <CaseCard
                 key={item}
+                groupId={groupId}
+                caseId={item}
                 setupAlgRight={groupScrambles[item][0]}
                 alg={groupAlgorithms[item][0]}
                 stickering={undefined}

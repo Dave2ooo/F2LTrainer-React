@@ -1,11 +1,15 @@
-import { Button, Card, VStack } from "@chakra-ui/react";
-import React, { useRef } from "react";
+import { Button, Card, Text, VStack } from "@chakra-ui/react";
+import React, { useMemo, useRef } from "react";
 import TwistyPlayer, { type TwistyPlayerHandle } from "./TwistyPlayer";
 import { mirrorAlg } from "@/logic/mirrorAlg";
 import type { StickerColor, StickerHidden } from "@/types/stickering";
 import getStickeringString from "@/logic/stickering";
+import type { Group } from "@/types/group";
+import { useGlobalState } from "@/state/GlobalStateContext";
 
 interface Props {
+  groupId: Group;
+  caseId: number;
   rotation?: string;
   setupAlgRight: string;
   alg: string;
@@ -15,6 +19,8 @@ interface Props {
 }
 
 const CaseCard = ({
+  groupId,
+  caseId,
   rotation = "z2 y'",
   setupAlgRight,
   alg,
@@ -25,6 +31,39 @@ const CaseCard = ({
   const twistyRef = useRef<TwistyPlayerHandle>(null);
 
   const [mirrored, setMirrored] = React.useState(false);
+  const { state, setState } = useGlobalState();
+
+  const currentSelection = useMemo(() => {
+    return state.groups[groupId]?.cases[caseId]?.algorithmSelection;
+  }, [caseId, groupId, state.groups]);
+
+  const handleAlgorithmSelectionUpdate = React.useCallback(() => {
+    setState((previousState) => {
+      const groupState = previousState.groups[groupId];
+      const caseState = groupState?.cases[caseId];
+
+      if (!groupState || !caseState) {
+        return previousState;
+      }
+
+      return {
+        ...previousState,
+        groups: {
+          ...previousState.groups,
+          [groupId]: {
+            ...groupState,
+            cases: {
+              ...groupState.cases,
+              [caseId]: {
+                ...caseState,
+                algorithmSelection: { left: 1, right: 1 },
+              },
+            },
+          },
+        },
+      };
+    });
+  }, [caseId, groupId, setState]);
 
   return (
     <>
@@ -46,6 +85,12 @@ const CaseCard = ({
           <VStack>
             <Button>Edit</Button>
             <Button onClick={() => setMirrored(!mirrored)}>Mirror</Button>
+            <Button onClick={handleAlgorithmSelectionUpdate}>
+              Set Algorithm Selection to (1, 1)
+            </Button>
+            <Text fontSize="sm">
+              Current selection: L {currentSelection?.left ?? "-"} / R {currentSelection?.right ?? "-"}
+            </Text>
           </VStack>
         </Card.Footer>
       </Card.Root>
