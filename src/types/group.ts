@@ -28,6 +28,29 @@ export interface GlobalState {
     colorSelection: Record<"cross" | "front", string>;
 }
 
+const defaultTrainStateSelection = {
+    unlearned: false,
+    learning: true,
+    finished: false,
+} as const satisfies Record<TrainState, boolean>;
+
+const defaultTrainGroupSelection = {
+    basic: true,
+    basicBack: true,
+    advanced: true,
+    expert: true,
+} as const satisfies Record<Group, boolean>;
+
+const defaultTrainSideSelection = {
+    left: true,
+    right: true,
+} as const satisfies Record<"left" | "right", boolean>;
+
+const defaultColorSelection = {
+    cross: "white",
+    front: "red",
+} as const satisfies Record<"cross" | "front", string>;
+
 export interface GroupDefinition {
     readonly id: Group;
     readonly numberCases: number;
@@ -271,3 +294,12 @@ export const createGroupState = (group: Group, definition: GroupDefinition = GRO
 
 export const createInitialGroupsState = (): Record<Group, GroupState> =>
     Object.fromEntries(GROUPS.map((group) => [group, createGroupState(group)])) as Record<Group, GroupState>;
+
+export const createInitialGlobalState = (): GlobalState => ({
+    groups: createInitialGroupsState(),
+    currentGroup: "basic",
+    trainStateSelection: { ...defaultTrainStateSelection },
+    trainGroupSelection: { ...defaultTrainGroupSelection },
+    trainSideSelection: { ...defaultTrainSideSelection },
+    colorSelection: { ...defaultColorSelection },
+});
