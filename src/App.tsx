@@ -10,10 +10,6 @@ function App() {
 
   console.log("globalState", globalState);
 
-  const editAlg = (group: Group, indexCase: number) => {
-    console.log("Edit Alg: group", group, "indexCase", indexCase);
-  };
-
   return (
     <>
       <div>
