@@ -26,8 +26,6 @@ interface GlobalState {
 }
 
 const BASIC_COLLECTION = {
-
-    imgPath: "./images/basic_cases/",
     numberCases: 41,
 
     categoryNames: [
@@ -60,8 +58,6 @@ const BASIC_COLLECTION = {
 };
 
 const BASIC_BACK_COLLECTION = {
-
-    imgPath: "./images/basic_cases_back/",
     numberCases: 41,
 
     categoryNames: [
@@ -94,9 +90,6 @@ const BASIC_BACK_COLLECTION = {
 };
 
 const ADVANCED_COLLECTION = {
-
-    //
-    imgPath: "./images/advanced_cases/",
     numberCases: 60, // 42,
 
     categoryNames: [
@@ -210,8 +203,6 @@ const ADVANCED_COLLECTION = {
 };
 
 const EXPERT_COLLECTION = {
-
-    imgPath: "./images/expert_cases/",
     numberCases: 17,
 
     categoryNames: [
