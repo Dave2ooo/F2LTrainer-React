@@ -1,6 +1,6 @@
 import CategoryComponent from "./CategoryComponent";
-import { GROUP_ALGORITHMS, GROUP_SCRAMBLES, type AlgorithmCollection } from "../data";
-import { GROUP_DEFINITIONS, type Group, type GroupDefinition } from "@/types/group";
+import type { AlgorithmCollection } from "../data";
+import type { GroupDefinition } from "@/types/group";
 import { For } from "@chakra-ui/react";
 
 interface Props {
